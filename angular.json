@@ -25,7 +25,9 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/api",
+              "src/.htaccess"
             ],
             "styles": [
               "src/styles.scss"
@@ -123,6 +125,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "todo-patrickwthomas-net"
+    }
+  },
+  "defaultProject": "todo-patrickwthomas-net",
+  "cli": {
+    "analytics": "39924b49-3678-456c-a519-5526392fb7d2"
+  }
 }
