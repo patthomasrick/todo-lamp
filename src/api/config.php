@@ -1,6 +1,8 @@
 <?php
 
-const host = "108.167.183.27";
+const session_id_length = 32;
+
+const host = "mysql-server";
 const db_user = "pwt5ca_todo";
 const db_password = "23nBNY5FfxKx8QYKiAxV";
 const db_name = "pwt5ca_todo";
