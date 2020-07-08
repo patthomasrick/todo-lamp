@@ -15,12 +15,13 @@ if ($username != null && $password != null) {
             $session_id = bin2hex(random_bytes(session_id_length));
             $stmt = $conn->prepare("UPDATE users SET session_id = ? WHERE ?");
             $stmt->execute([$session_id, $row['id']]);
-            
+
             setcookie("username", "$username", time() + 3600 * 24 * 31, "/", "",  0);
             setcookie("session_id", "$session_id", time() + 3600 * 24 * 31, "/", "",  0);
-            echo ("Authentication success");
+
+            echo json_encode(array("username" => $username, "session_id" => $session_id));
         } else {
-            die("Authentication failed.");
+            echo json_encode(array("message" => "authentication failed"));
         }
     } catch (\Exception $e) {
         if ($pdo->inTransaction()) {
@@ -29,5 +30,5 @@ if ($username != null && $password != null) {
         throw $e;
     }
 } else {
-    die("Authentication failed (username/password not posted).");
+    echo json_encode(array("message" => "authentication failed (username/password not POSTed)"));
 }
