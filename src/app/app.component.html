@@ -1,4 +1,23 @@
-
-<app-all-tasks-view></app-all-tasks-view>
-
-<app-task-details-view></app-task-details-view>
+<div *ngIf="!loggedIn; else elseBlock">
+  <form (ngSubmit)="formSubmit()" method="post">
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" type="text" [(ngModel)]='formUsername'>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input class="input" type="password" [(ngModel)]='formPassword'>
+      </div>
+    </div>
+    <div class="field">
+      <button type="submit"></button>
+    </div>
+  </form>
+</div>
+<ng-template #elseBlock>
+  <app-all-tasks-view></app-all-tasks-view>
+  <app-task-details-view></app-task-details-view>
+</ng-template>

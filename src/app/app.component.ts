@@ -10,13 +10,26 @@ import { ApiService } from './api.service';
 export class AppComponent {
   title = 'todo-patrickwthomas-net';
 
-  constructor(private apiService: ApiService, private formBuilder: FormBuilder) { }
+  loggedIn:boolean = false;
+  username:string;
+  sessionID:string;
 
-  ngOnInit() {
-    var $post = this.apiService.login("patrick", "mypassword");
-    console.log($post);
-    $post.subscribe(data => {
-      console.log(data);
-    });
+  formUsername:string;
+  formPassword:string;
+
+  constructor(public apiService: ApiService, private formBuilder: FormBuilder) {
+    this.apiService.isLoggedIn().subscribe(data => {
+      this.loggedIn = data;
+    })
+    this.apiService.getUsername().subscribe(data => {
+      this.username = data;
+    })
+    this.apiService.getSessionID().subscribe(data => {
+      this.sessionID = data;
+    })
+  }
+
+  formSubmit() {
+    this.apiService.login(this.formUsername, this.formPassword);
   }
 }

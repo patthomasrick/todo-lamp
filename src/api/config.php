@@ -11,3 +11,8 @@ const db_name = "pwt5ca_todo";
 // ); 
 
 const conn_str = "mysql:host=" . host . ";dbname=" . db_name;
+
+
+const RESP_OKAY = 200;
+const RESP_BAD = 400;
+const RESP_UNAUTH = 401;
