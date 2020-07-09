@@ -2,10 +2,16 @@
 
 require("connect.php");
 
-$postdata = file_get_contents("php://input");
-$request = json_decode($postdata);
-$username = $request->username;
-$password = $request->password;
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+if ($username == "" || $password == "") {
+    $postdata = file_get_contents("php://input");
+    $request = json_decode($postdata);
+    $username = $request->username;
+    $password = $request->password;
+}
 
 if ($username != null && $password != null) {
     try {
@@ -35,6 +41,6 @@ if ($username != null && $password != null) {
         throw $e;
     }
 } else {
-    // http_response_code(RESP_BAD);
+    http_response_code(RESP_BAD);
     echo json_encode(array("message" => "authentication failed (username/password not POSTed)", "username" => "$username", "password" => "$password"));
 }

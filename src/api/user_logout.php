@@ -16,9 +16,9 @@ if ($username != null && $session_id != null) {
 
             setcookie("username", "", time() - 1, "/", "",  0);
             setcookie("session_id", "", time() - 1, "/", "",  0);
-            echo ("Log out success");
+            echo json_encode(array("success" => True));
         } else {
-            die("Log out failed.");
+            echo json_encode(array("success" => False));
         }
     } catch (\Exception $e) {
         if ($conn->inTransaction()) {
@@ -27,5 +27,5 @@ if ($username != null && $session_id != null) {
         throw $e;
     }
 } else {
-    die("Log out failed (not logged in).");
+    echo json_encode(array("success" => False));
 }

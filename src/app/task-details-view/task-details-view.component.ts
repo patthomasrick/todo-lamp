@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-task-details-view',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskDetailsViewComponent implements OnInit {
 
-  constructor() { }
+  selectedTask: number = -1;
+
+  constructor(private apiService: ApiService) {
+    this.apiService.getSelectedTaskID().subscribe(data => { this.selectedTask = data; });
+  }
 
   ngOnInit(): void {
   }

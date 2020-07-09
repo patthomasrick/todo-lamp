@@ -1,23 +1,37 @@
 <div *ngIf="!loggedIn; else elseBlock">
-  <form (ngSubmit)="formSubmit()" method="post">
+  <!-- Login form -->
+  <form [formGroup]="loginForm" (ngSubmit)="logInSubmit(loginForm.value)">
     <div class="field">
       <label class="label">Username</label>
       <div class="control">
-        <input class="input" type="text" [(ngModel)]='formUsername'>
+        <input class="input" type="text" formControlName='username'>
       </div>
     </div>
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input class="input" type="password" [(ngModel)]='formPassword'>
+        <input class="input" type="password" formControlName='password'>
       </div>
     </div>
     <div class="field">
-      <button type="submit"></button>
+      <button type="submit">Submit</button>
     </div>
   </form>
 </div>
 <ng-template #elseBlock>
+  <!-- Log out form -->
+  <div class="container">
+    Currently logged in as {{ username }}
+  </div>
+  <form (ngSubmit)="logOutSubmit()">
+    <div class="field">
+      <button type="submit">Log Out</button>
+    </div>
+  </form>
+
+  <!-- All tasks -->
   <app-all-tasks-view></app-all-tasks-view>
+
+  <!-- Task details -->
   <app-task-details-view></app-task-details-view>
 </ng-template>

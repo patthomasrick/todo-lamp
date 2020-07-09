@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from './api.service';
 
@@ -7,29 +7,32 @@ import { ApiService } from './api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'todo-patrickwthomas-net';
 
-  loggedIn:boolean = false;
-  username:string;
-  sessionID:string;
+  loggedIn: boolean = false;
+  username: string;
+  sessionID: string;
 
-  formUsername:string;
-  formPassword:string;
+  loginForm;
 
   constructor(public apiService: ApiService, private formBuilder: FormBuilder) {
-    this.apiService.isLoggedIn().subscribe(data => {
-      this.loggedIn = data;
-    })
-    this.apiService.getUsername().subscribe(data => {
-      this.username = data;
-    })
-    this.apiService.getSessionID().subscribe(data => {
-      this.sessionID = data;
-    })
+    this.apiService.isLoggedIn().subscribe(data => { this.loggedIn = data; });
+    this.apiService.getUsername().subscribe(data => { this.username = data; });
+    this.apiService.getSessionID().subscribe(data => { this.sessionID = data; });
+
+    this.loginForm = this.formBuilder.group({ username: "", password: "" });
   }
 
-  formSubmit() {
-    this.apiService.login(this.formUsername, this.formPassword);
+  ngOnInit() {
+    this.apiService.validateSession();
+  }
+
+  logInSubmit(values) {
+    this.apiService.login(values.username, values.password);
+  }
+
+  logOutSubmit() {
+    this.apiService.logout();
   }
 }
