@@ -1,37 +1,55 @@
-<div *ngIf="!loggedIn; else elseBlock">
-  <!-- Login form -->
-  <form [formGroup]="loginForm" (ngSubmit)="logInSubmit(loginForm.value)">
-    <div class="field">
-      <label class="label">Username</label>
-      <div class="control">
-        <input class="input" type="text" formControlName='username'>
-      </div>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <div class="navbar-item">
+      <strong class="">ToDo</strong>
     </div>
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password" formControlName='password'>
-      </div>
-    </div>
-    <div class="field">
-      <button type="submit">Submit</button>
-    </div>
-  </form>
-</div>
-<ng-template #elseBlock>
-  <!-- Log out form -->
-  <div class="container">
-    Currently logged in as {{ username }}
   </div>
-  <form (ngSubmit)="logOutSubmit()">
-    <div class="field">
-      <button type="submit">Log Out</button>
+
+  <div class="navbar-menu">
+    <div class="navbar-end navbar-item buttons">
+      <div *ngIf="loggedIn">
+        <form (ngSubmit)="logOutSubmit()">
+          <div class="field">
+            <button class="button is-primary" type="submit">Log out of {{ username }}</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
+  </div>
+</nav>
 
-  <!-- All tasks -->
-  <app-all-tasks-view></app-all-tasks-view>
+<section class="section">
+  <div *ngIf="!loggedIn; else elseBlock">
+    <!-- Login form -->
+    <form [formGroup]="loginForm" (ngSubmit)="logInSubmit(loginForm.value)">
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <input class="input" type="text" formControlName='username'>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input class="input" type="password" formControlName='password'>
+        </div>
+      </div>
+      <div class="field">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
 
-  <!-- Task details -->
-  <app-task-details-view></app-task-details-view>
-</ng-template>
+  <ng-template #elseBlock>
+    <div class="columns">
+      <div class="column container">
+        <!-- All tasks -->
+        <app-all-tasks-view></app-all-tasks-view>
+      </div>
+      <div class="column container">
+        <!-- Task details -->
+        <app-task-details-view></app-task-details-view>
+      </div>
+    </div>
+  </ng-template>
+</section>

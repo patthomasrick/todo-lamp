@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+@charset "utf-8";
+@import url("https://fonts.googleapis.com/css2?family=Merriweather&family=Open+Sans&display=swap");
+
+// Set my custom colors
+$spacecadet: #29335c;
+$flame: #e4572e;
+$marigold: #f3a712;
+$olivine: #a8c686;
+$airsuperiorityblue: #669bbc;
+
+// Update Bulma's global variables
+$family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
+$family-serif: Merriweather, Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+$primary: $spacecadet;
+$link: $airsuperiorityblue;
+$warning: $marigold;
+$danger: $flame;
+$success: $olivine;
+
+$footer-background-color: $flame;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $family-serif;
+}
+
+@import "../node_modules/bulma/bulma.sass";

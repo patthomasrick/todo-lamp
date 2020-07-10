@@ -10,7 +10,7 @@ try {
     $stmt = $conn->prepare("SELECT session_id FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $row = $stmt->fetch();
-    if ($row['session_id'] == $session_id) {
+    if (password_verify($session_id, $row['session_id'])) {
         $stmt = $conn->prepare("SELECT * FROM tasks where username = ? ORDER BY date_created");
         $stmt->execute([$username]);
 

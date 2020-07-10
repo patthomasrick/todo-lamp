@@ -10,7 +10,7 @@ if ($username != null && $session_id != null) {
         $stmt = $conn->prepare("SELECT id, session_id FROM users WHERE username = ?;");
         $stmt->execute(["$username"]);
         $row = $stmt->fetch();
-        if ($row['session_id'] == $session_id) {
+        if (password_verify($session_id, $row['session_id'])) {
             $stmt = $conn->prepare("UPDATE users SET session_id = NULL WHERE id = ?");
             $stmt->execute([$row['id']]);
 

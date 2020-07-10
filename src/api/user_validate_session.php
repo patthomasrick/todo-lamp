@@ -10,7 +10,7 @@ if ($username != null && $session_id != null) {
         $stmt = $conn->prepare("SELECT session_id FROM users WHERE username = ?;");
         $stmt->execute(["$username"]);
         $row = $stmt->fetch();
-        $is_valid = $row['session_id'] == $session_id;
+        $is_valid = password_verify($session_id, $row['session_id']);
         if ($is_valid) {
             echo json_encode(array(
                 "is_valid" => $is_valid,

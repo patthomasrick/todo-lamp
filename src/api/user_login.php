@@ -21,8 +21,9 @@ if ($username != null && $password != null) {
         $password_hash = $row['password'];
         if (password_verify($password, $password_hash)) {
             $session_id = bin2hex(random_bytes(session_id_length));
+            $session_id_hashed = password_hash($session_id, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("UPDATE users SET session_id = ? WHERE ?");
-            $stmt->execute([$session_id, $row['id']]);
+            $stmt->execute([$session_id_hashed, $row['id']]);
 
             setcookie("username", "$username", time() + 3600 * 24 * 31, "/", "",  0);
             setcookie("session_id", "$session_id", time() + 3600 * 24 * 31, "/", "",  0);

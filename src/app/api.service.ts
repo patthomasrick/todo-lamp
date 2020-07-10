@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Task } from './task';
+import { Task, Priority } from './task';
 
 const localUrl = "http://localhost:8080/api/";
 const httpOptions = {
@@ -14,6 +14,7 @@ const USER_LOG_IN = "user_login";
 const USER_LOG_OUT = "user_logout";
 const USER_VALIDATE_SESSION = "user_validate_session";
 const TASKS_VIEW = "tasks";
+const TASKS_CREATE = "tasks_create";
 
 interface apiLoginReturn {
   username: string;
@@ -72,6 +73,14 @@ export class ApiService {
     });
 
     return $is_valid;
+  }
+
+  createTask(name: string, description: string, priority: string) {
+    this.http.post<any>(localUrl + TASKS_CREATE, {name: name, description: description, priority: priority}, httpOptions).pipe(
+      catchError(e => { return this.handleError(e, true); })
+    ).subscribe(() => {
+      this._getTasks();
+    });
   }
 
   _getTasks() {
