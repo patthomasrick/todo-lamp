@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Task, Priority } from '../task';
 import { FormBuilder } from '@angular/forms';
@@ -13,8 +13,9 @@ export class AllTasksViewComponent implements OnInit {
   loggedIn: boolean = false;
   username: string;
   sessionID: string;
+  selected_task: number;
 
-  all_tasks: Array<Task>;
+  all_tasks: Map<number, Task>;
 
   createTaskForm;
 
@@ -22,13 +23,15 @@ export class AllTasksViewComponent implements OnInit {
     this.apiService.isLoggedIn().subscribe(data => { this.loggedIn = data; });
     this.apiService.getUsername().subscribe(data => { this.username = data; });
     this.apiService.getSessionID().subscribe(data => { this.sessionID = data; });
-    this.apiService.getTasks().subscribe(data => { this.all_tasks = data; });
+    this.apiService.getSelectedTaskID().subscribe(data => { this.selected_task = data; });
+    this.apiService.getTasks().subscribe(data => { setTimeout(() => { this.all_tasks = data; }); });
 
     this.createTaskForm = this.formBuilder.group({ name: "", description: "", priority: "" });
-    this.createTaskForm.setValue({ name: "", description: "", priority: "normal" })
   }
 
   ngOnInit() {
+    this.all_tasks = new Map();
+    this.createTaskForm.setValue({ name: "", description: "", priority: "normal" });
   }
 
   selectTask(taskID: number) {

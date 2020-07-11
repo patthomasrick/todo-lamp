@@ -1,13 +1,43 @@
-<div class="container" *ngIf="task_index==-1; else detailsElse">
-  <p class="has-text-grey">
-    No task selected.
-  </p>
+<div class="container box">
+  <div *ngIf="task_index==-1; else detailsElse">
+    <p class="has-text-grey">
+      No task selected.
+    </p>
+  </div>
+  <ng-template #detailsElse>
+    <div>
+      Name: {{ currentTask().name }}
+    </div>
+    <div>
+      Description: {{ currentTask().description }}
+    </div>
+
+    <form class="form">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Name</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input class="input" type="text" placeholder="Name" value="{{ currentTask().name }}">
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Description</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <textarea class="textarea" placeholder="Task description.">{{ currentTask().description }}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
 </div>
-<ng-template #detailsElse>
-  <div>
-    Name: {{ currentTask().name }}
-  </div>
-  <div>
-    Description: {{ currentTask().description }}
-  </div>
-</ng-template>

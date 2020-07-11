@@ -1,22 +1,19 @@
-<div class="container">
-  <ul>
-    <li *ngFor="let task of all_tasks">
-      <a (click)="selectTask(task.id)">{{ task.id }} - {{ task.name }}</a>
-    </li>
-  </ul>
-  
-  <form [formGroup]="createTaskForm" (ngSubmit)="createTask(createTaskForm.value)">
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input class="input" type="text" placeholder="Create a new task" formControlName="name">
-          </div>
-          <div class="control">
-            <button class="button is-primary" type="submit">Create</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+<nav class="panel">
+  <p class="panel-heading">
+    All tasks
+  </p>
+
+  <a *ngFor="let task of all_tasks.values()" class="panel-block" [ngClass]="{'is-active has-text-weight-bold': selected_task === task.id}"
+    (click)="selectTask(task.id)">
+    <input type="checkbox">
+    {{ task.name }}
+  </a>
+
+  <div class="panel-block is-fullwidth">
+    <form class="control is-expanded field is-grouped" [formGroup]="createTaskForm"
+      (ngSubmit)="createTask(createTaskForm.value)">
+      <input class="input" type="text" placeholder="Create new task" formControlName="name">
+      <button class="button is-primary ml-2" type="submit">Create</button>
+    </form>
+  </div>
+</nav>

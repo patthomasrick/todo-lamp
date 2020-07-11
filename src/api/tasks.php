@@ -14,12 +14,9 @@ try {
         $stmt = $conn->prepare("SELECT * FROM tasks where username = ? ORDER BY date_created");
         $stmt->execute([$username]);
 
-        $count = 0;
         $all_tasks = array();
-
         while ($row = $stmt->fetch()) {
-            $all_tasks[$count] = $row;
-            $count++;
+            array_push($all_tasks, $row);
         }
 
         echo json_encode($all_tasks);

@@ -25,13 +25,22 @@ try {
     if (password_verify($session_id, $row['session_id'])) {
         $stmt = $conn->prepare("
         INSERT INTO `tasks`
-            (`username`, `name`, `description`, `priority`, `date_created`) 
+            (`username`, `name`, `description`, `priority`, `date_created`)
         VALUES 
-            (?, ?, ?, ?, CURRENT_TIME())
+            (?, ?, ?, ?, CURRENT_TIME());
         ");
         $stmt->execute([$username, $task_name, $task_description, $task_priority]);
+        $id = $conn->lastInsertId();
 
-        // http_response_code(RESP_OKAY);
+        // Now get all tasks.
+        $stmt = $conn->prepare("SELECT * FROM tasks WHERE username = ? ORDER BY date_created");
+        $stmt->execute([$username]);
+        $all_tasks = array();
+        while ($row = $stmt->fetch()) {
+            array_push($all_tasks, $row);
+        }
+
+        echo json_encode(array("id" => $id, "tasks" => $all_tasks));
     }
 } catch (\Exception $e) {
     if ($conn->inTransaction()) {

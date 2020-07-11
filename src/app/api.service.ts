@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Task, Priority } from './task';
+import { Task } from './task';
+import { stringify } from 'querystring';
 
 const localUrl = "http://localhost:8080/api/";
 const httpOptions = {
@@ -28,11 +29,18 @@ export class ApiService {
   private loggedInSubject = new Subject<boolean>();
   private usernameSubject = new Subject<string>();
   private sessionIDSubject = new Subject<string>();
-  private tasksSubject = new Subject<Array<Task>>();
+  private tasksSubject = new Subject<Map<number, Task>>();
   private selectedTaskSubject = new Subject<number>();
 
   constructor(private http: HttpClient) {
+    this.reset();
+  }
+
+  private reset() {
     this.loggedInSubject.next(false);
+    this.usernameSubject.next("");
+    this.sessionIDSubject.next("");
+    this.tasksSubject.next(new Map<number, Task>());
     this.selectedTaskSubject.next(-1);
   }
 
@@ -45,7 +53,7 @@ export class ApiService {
       this.sessionIDSubject.next(data.session_id);
       this.loggedInSubject.next(true);
 
-      this._getTasks();
+      this.updateTasks();
     });
   }
 
@@ -53,9 +61,7 @@ export class ApiService {
     this.http.post<apiLoginReturn>(localUrl + USER_LOG_OUT, {}, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
-      this.usernameSubject.next(null);
-      this.sessionIDSubject.next(null);
-      this.loggedInSubject.next(false);
+      this.reset();
     });
   }
 
@@ -69,7 +75,7 @@ export class ApiService {
       this.sessionIDSubject.next(data.session_id);
       this.loggedInSubject.next($is_valid);
 
-      this._getTasks();
+      this.updateTasks();
     });
 
     return $is_valid;
@@ -78,16 +84,25 @@ export class ApiService {
   createTask(name: string, description: string, priority: string) {
     this.http.post<any>(localUrl + TASKS_CREATE, { name: name, description: description, priority: priority }, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
-    ).subscribe(() => {
-      this._getTasks();
+    ).subscribe((data) => {
+      var $tasks = new Map<number, Task>();
+      data.tasks.forEach(element => {
+        $tasks.set(element.id, element);
+      });
+      this.tasksSubject.next($tasks);
+      this.selectedTaskSubject.next(data.id);
     });
   }
 
-  _getTasks() {
+  updateTasks() {
     this.http.post<Array<Task>>(localUrl + TASKS_VIEW, {}, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
-      this.tasksSubject.next(data);
+      var $tasks = new Map<number, Task>();
+      data.forEach(element => {
+        $tasks.set(element.id, element);
+      });
+      this.tasksSubject.next($tasks);
     });
   }
 
