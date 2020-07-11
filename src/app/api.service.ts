@@ -76,7 +76,7 @@ export class ApiService {
   }
 
   createTask(name: string, description: string, priority: string) {
-    this.http.post<any>(localUrl + TASKS_CREATE, {name: name, description: description, priority: priority}, httpOptions).pipe(
+    this.http.post<any>(localUrl + TASKS_CREATE, { name: name, description: description, priority: priority }, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(() => {
       this._getTasks();
@@ -87,7 +87,6 @@ export class ApiService {
     this.http.post<Array<Task>>(localUrl + TASKS_VIEW, {}, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
-      console.log(data);
       this.tasksSubject.next(data);
     });
   }
@@ -127,8 +126,8 @@ export class ApiService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `Backend returned code ${error.status}: ${error.statusText}, ` +
+        `body was: ${JSON.stringify(error.error)}`);
     }
     // return an observable with a user-facing error message
     return throwError(

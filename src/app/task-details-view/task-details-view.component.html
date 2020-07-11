@@ -1,5 +1,13 @@
-<p>task-details-view works!</p>
-
-<div class="container">
-  Selected task: {{selectedTask}}
+<div class="container" *ngIf="task_index==-1; else detailsElse">
+  <p class="has-text-grey">
+    No task selected.
+  </p>
 </div>
+<ng-template #detailsElse>
+  <div>
+    Name: {{ currentTask().name }}
+  </div>
+  <div>
+    Description: {{ currentTask().description }}
+  </div>
+</ng-template>

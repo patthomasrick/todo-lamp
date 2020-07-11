@@ -1,31 +1,35 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <div class="navbar-item">
-      <strong class="">ToDo</strong>
-    </div>
-  </div>
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+  <!-- <div class="navbar-brand">
+  </div> -->
 
   <div class="navbar-menu">
+    <div class="navbar-item">
+      ToDo
+    </div>
     <div class="navbar-end navbar-item buttons">
-      <div *ngIf="loggedIn">
+      <div *ngIf="loggedIn; else navBarElse">
         <form (ngSubmit)="logOutSubmit()">
           <div class="field">
             <button class="button is-primary" type="submit">Log out of {{ username }}</button>
           </div>
         </form>
       </div>
+      <ng-template #navBarElse>
+        <button class="button" disabled>Logged out</button>
+      </ng-template>
     </div>
   </div>
 </nav>
 
 <section class="section">
-  <div *ngIf="!loggedIn; else elseBlock">
+  <div class="login-form box" *ngIf="!loggedIn; else elseBlock">
     <!-- Login form -->
+    <p class="title">Log in to ToDo</p>
     <form [formGroup]="loginForm" (ngSubmit)="logInSubmit(loginForm.value)">
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input class="input" type="text" formControlName='username'>
+          <input class="input" type="text" formControlName='username' autofocus>
         </div>
       </div>
       <div class="field">
@@ -35,7 +39,7 @@
         </div>
       </div>
       <div class="field">
-        <button type="submit">Submit</button>
+        <button class='button is-primary' type="submit">Submit</button>
       </div>
     </form>
   </div>
@@ -44,10 +48,12 @@
     <div class="columns">
       <div class="column container">
         <!-- All tasks -->
+        <div class="title">All Tasks</div>
         <app-all-tasks-view></app-all-tasks-view>
       </div>
       <div class="column container">
         <!-- Task details -->
+        <div class="title">Task Details</div>
         <app-task-details-view></app-task-details-view>
       </div>
     </div>

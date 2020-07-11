@@ -37,5 +37,6 @@ export class AllTasksViewComponent implements OnInit {
 
   createTask(values) {
     this.apiService.createTask(values.name, values.description, values.priority);
+    this.createTaskForm.setValue({ name: "", description: "", priority: "normal" });
   }
 }

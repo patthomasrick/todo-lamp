@@ -3,45 +3,20 @@
     <li *ngFor="let task of all_tasks">
       <a (click)="selectTask(task.id)">{{ task.id }} - {{ task.name }}</a>
     </li>
-    <li>
-      <form [formGroup]="createTaskForm" (ngSubmit)="createTask(createTaskForm.value)">
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Create new task</label>
+  </ul>
+  
+  <form [formGroup]="createTaskForm" (ngSubmit)="createTask(createTaskForm.value)">
+    <div class="field is-horizontal">
+      <div class="field-body">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="Create a new task" formControlName="name">
           </div>
-          <div class="field-body">
-            <div class="field">
-              <p class="control is-expanded">
-                <input class="input" type="text" placeholder="Task name" formControlName="name">
-              </p>
-            </div>
-            <div class="field">
-              <p class="control is-expanded">
-                <input class="input" placeholder="Task description" formControlName="description">
-              </p>
-            </div>
-
-            <div class="field is-narrow">
-              <div class="control">
-                <div class="select is-fullwidth">
-                  <select formControlName="priority">
-                    <option [ngValue]='"high"'>High priority</option>
-                    <option [ngValue]='"normal"' selected=True>Normal priority</option>
-                    <option [ngValue]='"low"'>Low priority</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="control">
-                <button class="button" type="submit">Submit</button>
-              </div>
-            </div>
-
+          <div class="control">
+            <button class="button is-primary" type="submit">Create</button>
           </div>
         </div>
-      </form>
-    </li>
-  </ul>
+      </div>
+    </div>
+  </form>
 </div>

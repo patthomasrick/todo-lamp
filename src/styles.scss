@@ -28,4 +28,11 @@ h6 {
     font-family: $family-serif;
 }
 
+div.login-form {
+    max-width: 400px;
+    // max-height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 @import "../node_modules/bulma/bulma.sass";
