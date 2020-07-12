@@ -3,11 +3,18 @@
     All tasks
   </p>
 
-  <a *ngFor="let task of all_tasks.values()" class="panel-block" [ngClass]="{'is-active has-text-weight-bold': selected_task === task.id}"
-    (click)="selectTask(task.id)">
-    <input type="checkbox">
-    {{ task.name }}
-  </a>
+  <ng-container *ngIf="current_tasks.length === 0; else ifHasTasks">
+    <a class="panel-block">
+      No tasks! Create one below to get started.
+    </a>
+  </ng-container>
+  <ng-template #ifHasTasks>
+    <a *ngFor="let task_id of current_tasks" class="panel-block"
+      [ngClass]="{'is-active has-text-weight-bold': selected_task === task_id}" (click)="selectTask(task_id)">
+      <input type="checkbox">
+      {{ all_tasks.get(task_id).name }}
+    </a>
+  </ng-template>
 
   <div class="panel-block is-fullwidth">
     <form class="control is-expanded field is-grouped" [formGroup]="createTaskForm"

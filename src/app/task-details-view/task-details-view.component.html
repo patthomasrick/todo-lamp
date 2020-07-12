@@ -5,39 +5,67 @@
     </p>
   </div>
   <ng-template #detailsElse>
-    <div>
-      Name: {{ currentTask().name }}
-    </div>
-    <div>
-      Description: {{ currentTask().description }}
-    </div>
-
-    <form class="form">
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Name</label>
+    <form [formGroup]="detailsForm" (ngSubmit)="saveDetails()">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="field">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Name" spellcheck="true" maxlength=255
+              autocapitalize="sentences" formControlName="name">
+          </p>
         </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Name" value="{{ currentTask().name }}">
-            </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <textarea class="textarea" placeholder="Task description." spellcheck="true" autocapitalize="sentences"
+            formControlName="description"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Time due</label>
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <input class="input" type="date" name="" id="">
+          </div>
+          <div class="control is-expanded">
+            <input class="input" type="time" name="" id="">
           </div>
         </div>
       </div>
 
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Description</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <textarea class="textarea" placeholder="Task description.">{{ currentTask().description }}</textarea>
+      <div class="field">
+        <nav class="level" style="width:100%">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-small" type="submit"
+                [ngClass]="{'is-primary': detailsForm.value.name, 'is-danger': !detailsForm.value.name}">
+                Save changes
+              </button>
             </div>
           </div>
-        </div>
+          <div class="level-right">
+            <div class="level-item">
+              <a class="button is-danger is-small" (click)="deleteActiveTask()">
+                Delete task
+              </a>
+            </div>
+          </div>
+        </nav>
       </div>
+
+      <!-- <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+          </div>
+        </div>
+      </div> -->
+
     </form>
   </ng-template>
 </div>
