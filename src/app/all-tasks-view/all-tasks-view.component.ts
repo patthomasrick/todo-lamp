@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Task, Priority } from '../task';
 import { FormBuilder } from '@angular/forms';
+import { isLabeledStatement } from 'typescript';
 
 enum SORT_BY {
   date_created, date_due, name
@@ -22,6 +23,7 @@ export class AllTasksViewComponent implements OnInit {
   all_tasks: Map<number, Task> = new Map();
   current_tasks: Array<number> = new Array();
   finished_tasks: Array<number> = new Array();
+  finished_tasks_collapsed: boolean = true;
 
   createTaskForm;
 
@@ -89,7 +91,7 @@ export class AllTasksViewComponent implements OnInit {
       var $taskB = this.all_tasks.get(b);
       return $taskA.name.localeCompare($taskB.name);
     };
-    
+
     if (s == SORT_BY.date_created) {
       this.current_tasks = this.current_tasks.sort($created);
     } else if (s == SORT_BY.date_due) {
@@ -97,5 +99,9 @@ export class AllTasksViewComponent implements OnInit {
     } else if (s == SORT_BY.name) {
       this.current_tasks = this.current_tasks.sort($name);
     }
+  }
+
+  onDoneChange(task_id: number, to_value: number) {
+    this.apiService.setTaskIsDone(task_id, to_value);
   }
 }

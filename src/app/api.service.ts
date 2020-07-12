@@ -66,22 +66,20 @@ export class ApiService {
   }
 
   validateSession() {
-    var $is_valid = false;
     this.http.post<any>(localUrl + USER_VALIDATE_SESSION, {}, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
-      $is_valid = data.is_valid;
       this.usernameSubject.next(data.username);
       this.sessionIDSubject.next(data.session_id);
-      this.loggedInSubject.next($is_valid);
-
+      this.loggedInSubject.next(data.is_valid);
       this.updateTasks();
     });
-
-    return $is_valid;
   }
 
   createTask(name: string, description: string, priority: string) {
+    if (name.length < 1) {
+      return;
+    }
     this.http.post<any>(localUrl + TASKS_CREATE, { name: name, description: description, priority: priority }, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe((data) => {
@@ -106,12 +104,11 @@ export class ApiService {
     });
   }
 
-  setTaskIsDone(isDone: boolean) {
-    this.http.post<any>(localUrl + TASKS_SET_DONE, {"is_done": isDone}, httpOptions).pipe(
+  setTaskIsDone(taskID: number, isDone: number) {
+    if (isDone > 1 && isDone < 0) { return; }
+    this.http.post<any>(localUrl + TASKS_SET_DONE, { "task_id": taskID, "task_done": isDone }, httpOptions).pipe(
       catchError(e => { return this.handleError(e, true); })
-    ).subscribe(data => {
-      
-    });
+    ).subscribe(data => { this.updateTasks(); });
   }
 
   getUsername() {

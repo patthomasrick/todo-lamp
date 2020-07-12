@@ -3,24 +3,48 @@
     All tasks
   </p>
 
+  <!-- Unfinished tasks -->
   <ng-container *ngIf="current_tasks.length === 0; else ifHasTasks">
-    <a class="panel-block">
-      No tasks! Create one below to get started.
-    </a>
+    <div class="panel-block">
+      No tasks! All done for today.
+    </div>
   </ng-container>
   <ng-template #ifHasTasks>
     <a *ngFor="let task_id of current_tasks" class="panel-block"
       [ngClass]="{'is-active has-text-weight-bold': selected_task === task_id}" (click)="selectTask(task_id)">
-      <input type="checkbox">
+      <input type="checkbox" (change)="onDoneChange(task_id, 1)">
       {{ all_tasks.get(task_id).name }}
     </a>
   </ng-template>
 
+  <!-- Add more tasks -->
   <div class="panel-block is-fullwidth">
     <form class="control is-expanded field is-grouped" [formGroup]="createTaskForm"
       (ngSubmit)="createTask(createTaskForm.value)">
       <input class="input" type="text" placeholder="Create new task" formControlName="name">
-      <button class="button is-primary ml-2" type="submit">Create</button>
+      <button class="button is-primary ml-2" type="submit"
+        [attr.disabled]="createTaskForm.value.name.length < 1 ? '' : null">Create</button>
     </form>
   </div>
+
+  <!-- Finished tasks -->
+  <ng-container *ngIf="!(finished_tasks.length === 0)">
+    <ng-container *ngIf="finished_tasks_collapsed; else finishedIsNotCollapsed">
+      <a class="panel-block is-unselectable" (click)="finished_tasks_collapsed = !finished_tasks_collapsed">
+        <strong>Finished tasks ({{finished_tasks.length}}) <i class="fa fa-plus" aria-hidden="true"></i>
+        </strong>
+      </a>
+    </ng-container>
+    <ng-template #finishedIsNotCollapsed>
+      <a class="panel-block" (click)="finished_tasks_collapsed = !finished_tasks_collapsed">
+        <strong>Finished tasks <i class="fa fa-minus" aria-hidden="true"></i></strong>
+      </a>
+      <a *ngFor="let task_id of finished_tasks" class="panel-block has-text-grey"
+        [ngClass]="{'is-active has-text-weight-bold': selected_task === task_id}" (click)="selectTask(task_id)">
+        <input type="checkbox" checked (change)="onDoneChange(task_id, 0)">
+        {{ all_tasks.get(task_id).name }}
+      </a>
+    </ng-template>
+  </ng-container>
+
 </nav>

@@ -19,8 +19,8 @@ export class TaskDetailsViewComponent implements OnInit {
     priority: new FormControl(''),
     date_due_date: new FormControl(''),
     date_due_time: new FormControl(''),
-    date_created_date: new FormControl(''),
-    date_created_time: new FormControl(''),
+    date_created_date: new FormControl({value: "", disabled: true}),
+    date_created_time: new FormControl({value: "", disabled: true}),
   });
 
   constructor(private apiService: ApiService) {

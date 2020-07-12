@@ -8,7 +8,7 @@ $session_id = $_COOKIE["session_id"];
 try {
     if (verify_user($conn, $username, $session_id)) {
         echo json_encode(array(
-            "is_valid" => $is_valid,
+            "is_valid" => true,
             "username" => $username,
             "session_id" => $session_id,
         ));
