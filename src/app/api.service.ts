@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Task } from './task';
-import { stringify } from 'querystring';
 
 const localUrl = "http://localhost:8080/api/";
 const httpOptions = {
@@ -11,11 +10,12 @@ const httpOptions = {
     'Content-Type': 'multipart/form-data',
   })
 };
-const USER_LOG_IN = "user_login";
-const USER_LOG_OUT = "user_logout";
-const USER_VALIDATE_SESSION = "user_validate_session";
-const TASKS_VIEW = "tasks";
-const TASKS_CREATE = "tasks_create";
+const USER_LOG_IN = "user/login";
+const USER_LOG_OUT = "user/logout";
+const USER_VALIDATE_SESSION = "user/validate";
+const TASKS_VIEW = "tasks/view";
+const TASKS_CREATE = "tasks/create";
+const TASKS_SET_DONE = "tasks/set_done";
 
 interface apiLoginReturn {
   username: string;
@@ -103,6 +103,14 @@ export class ApiService {
         $tasks.set(element.id, element);
       });
       this.tasksSubject.next($tasks);
+    });
+  }
+
+  setTaskIsDone(isDone: boolean) {
+    this.http.post<any>(localUrl + TASKS_SET_DONE, {"is_done": isDone}, httpOptions).pipe(
+      catchError(e => { return this.handleError(e, true); })
+    ).subscribe(data => {
+      
     });
   }
 

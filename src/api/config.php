@@ -1,16 +1,24 @@
 <?php
 
-$is_prod = getenv('IS_PROD');
-if (!$is_prod) {
+$is_dev = getenv("IS_DEV");
+if ($is_dev) {
     define("host", "mysql-server");
     define("db_user", "pwt5ca_todo");
     define("db_password", "23nBNY5FfxKx8QYKiAxV");
     define("db_name", "pwt5ca_todo");
+
+    define("COOKIE_DOMAIN", "");
+    define("COOKIE_PATH", "/");
+    define("COOKIE_LIFE", 60*60*24);
 } else {
     define("host", "mysql-server");
     define("db_user", "pwt5ca_todo");
     define("db_password", "23nBNY5FfxKx8QYKiAxV");
     define("db_name", "pwt5ca_todo");
+
+    define("COOKIE_DOMAIN", "");
+    define("COOKIE_PATH", "/");
+    define("COOKIE_LIFE", 60*60*24);
 }
 
 const session_id_length = 32;

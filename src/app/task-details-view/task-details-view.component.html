@@ -25,13 +25,38 @@
       </div>
 
       <div class="field">
-        <label class="label">Time due</label>
+        <label class="label">Priority</label>
+        <div class="control">
+          <div class="select">
+            <select formControlName="priority">
+              <option accesskey="h" value="high">High</option>
+              <option accesskey="n" value="normal">Normal</option>
+              <option accesskey="l" value="low">Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Date due</label>
         <div class="field is-grouped">
           <div class="control is-expanded">
-            <input class="input" type="date" name="" id="">
+            <input class="input" type="date" formControlName="date_due_date">
           </div>
           <div class="control is-expanded">
-            <input class="input" type="time" name="" id="">
+            <input class="input" type="time" formControlName="date_due_time">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Date created</label>
+        <div class="field is-grouped">
+          <div class="control is-expanded">
+            <input class="input" type="date" formControlName="date_created_date" disabled>
+          </div>
+          <div class="control is-expanded">
+            <input class="input" type="time" formControlName="date_created_time" disabled>
           </div>
         </div>
       </div>
