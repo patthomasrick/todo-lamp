@@ -1,0 +1,10 @@
+<div
+  [@toggleHidden]="notificationRead ? 'hidden' : 'shown'"
+  (click)="markAsRead()"
+  class="notificationOverlay"
+>
+  <div *ngIf="notification" class="notification" [ngClass]="[notification.bulmaClass]">
+    <button class="delete"></button>
+    {{ notification.message }}
+  </div>
+</div>

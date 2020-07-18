@@ -10,7 +10,9 @@
       <div *ngIf="loggedIn; else navBarElse">
         <form (ngSubmit)="logOutSubmit()">
           <div class="field">
-            <button class="button is-primary" type="submit">Log out of {{ username }}</button>
+            <button class="button is-primary" type="submit">
+              Log out of {{ username }}
+            </button>
           </div>
         </form>
       </div>
@@ -21,7 +23,20 @@
   </div>
 </nav>
 
+<!-- <section *ngIf="!notificationRead" class="section" (click)="readNotification()">
+  <div class="container">
+    <div class="notification" [ngClass]="notification.bulmaClass">
+      <button class="delete"></button>
+      {{ notification.message }}
+    </div>
+  </div>
+</section> -->
+
 <section class="section">
+  <div class="container">
+    <app-notification></app-notification>
+  </div>
+
   <div class="login-form box" *ngIf="!loggedIn; else elseBlock">
     <!-- Login form -->
     <p class="title">Log in to ToDo</p>
@@ -29,17 +44,22 @@
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input class="input" type="text" formControlName='username' autofocus>
+          <input
+            class="input"
+            type="text"
+            formControlName="username"
+            autofocus
+          />
         </div>
       </div>
       <div class="field">
         <label class="label">Password</label>
         <div class="control">
-          <input class="input" type="password" formControlName='password'>
+          <input class="input" type="password" formControlName="password" />
         </div>
       </div>
       <div class="field">
-        <button class='button is-primary' type="submit">Submit</button>
+        <button class="button is-primary" type="submit">Submit</button>
       </div>
     </form>
   </div>

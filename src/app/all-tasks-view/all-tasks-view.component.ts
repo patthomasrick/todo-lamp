@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../api.service';
-import { Task, Priority } from '../task';
+import { Task } from '../task';
 import { FormBuilder } from '@angular/forms';
-import { isLabeledStatement } from 'typescript';
 
 enum SORT_BY {
   date_created, date_due, name

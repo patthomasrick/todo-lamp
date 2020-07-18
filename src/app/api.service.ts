@@ -3,9 +3,10 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Task } from './task';
+import { environment } from '../environments/environment';
 
-const localUrl = "http://localhost:8080/api/";
-const httpOptions = {
+const API_URL = environment.api_url;
+const HTTP_OPTIONS = {
   headers: new HttpHeaders({
     'Content-Type': 'multipart/form-data',
   })
@@ -16,6 +17,8 @@ const USER_VALIDATE_SESSION = "user/validate";
 const TASKS_VIEW = "tasks/view";
 const TASKS_CREATE = "tasks/create";
 const TASKS_SET_DONE = "tasks/set_done";
+const TASKS_UPDATE = "tasks/update";
+const TASKS_DELETE = "tasks/delete";
 
 interface apiLoginReturn {
   username: string;
@@ -46,7 +49,7 @@ export class ApiService {
 
   login(username: string, password: string) {
     var $post_data = { username: username, password: password };
-    this.http.post<apiLoginReturn>(localUrl + USER_LOG_IN, $post_data, httpOptions).pipe(
+    this.http.post<apiLoginReturn>(API_URL + USER_LOG_IN, $post_data, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, false); })
     ).subscribe(data => {
       this.usernameSubject.next(data.username);
@@ -58,7 +61,7 @@ export class ApiService {
   }
 
   logout() {
-    this.http.post<apiLoginReturn>(localUrl + USER_LOG_OUT, {}, httpOptions).pipe(
+    this.http.post<apiLoginReturn>(API_URL + USER_LOG_OUT, {}, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
       this.reset();
@@ -66,7 +69,7 @@ export class ApiService {
   }
 
   validateSession() {
-    this.http.post<any>(localUrl + USER_VALIDATE_SESSION, {}, httpOptions).pipe(
+    this.http.post<any>(API_URL + USER_VALIDATE_SESSION, {}, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
       this.usernameSubject.next(data.username);
@@ -80,7 +83,7 @@ export class ApiService {
     if (name.length < 1) {
       return;
     }
-    this.http.post<any>(localUrl + TASKS_CREATE, { name: name, description: description, priority: priority }, httpOptions).pipe(
+    this.http.post<any>(API_URL + TASKS_CREATE, { name: name, description: description, priority: priority }, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe((data) => {
       var $tasks = new Map<number, Task>();
@@ -93,7 +96,7 @@ export class ApiService {
   }
 
   updateTasks() {
-    this.http.post<Array<Task>>(localUrl + TASKS_VIEW, {}, httpOptions).pipe(
+    this.http.post<Array<Task>>(API_URL + TASKS_VIEW, {}, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => {
       var $tasks = new Map<number, Task>();
@@ -106,9 +109,31 @@ export class ApiService {
 
   setTaskIsDone(taskID: number, isDone: number) {
     if (isDone > 1 && isDone < 0) { return; }
-    this.http.post<any>(localUrl + TASKS_SET_DONE, { "task_id": taskID, "task_done": isDone }, httpOptions).pipe(
+    this.http.post<any>(API_URL + TASKS_SET_DONE, { "task_id": taskID, "task_done": isDone }, HTTP_OPTIONS).pipe(
       catchError(e => { return this.handleError(e, true); })
     ).subscribe(data => { this.updateTasks(); });
+  }
+
+  updateTask(id: number, name: string, description: string, priority: string, date_due: string) {
+    if (name.length < 1) {
+      return;
+    }
+    this.http.post<any>(API_URL + TASKS_UPDATE, {
+      task_id: id, name: name, description: description, priority: priority, date_due: date_due
+    }, HTTP_OPTIONS).pipe(
+      catchError(e => { return this.handleError(e, true); })
+    ).subscribe((data) => {
+      this.updateTasks();
+    });
+  }
+
+  deleteTask(id: number) {
+    this.http.post<any>(API_URL + TASKS_DELETE, { task_id: id }, HTTP_OPTIONS).pipe(
+      catchError(e => { return this.handleError(e, true); })
+    ).subscribe((data) => {
+      this.updateTasks();
+      this.setSelectedTaskID(-1);
+    });
   }
 
   getUsername() {

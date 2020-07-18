@@ -2,23 +2,25 @@
 
 $is_dev = getenv("IS_DEV");
 if ($is_dev) {
-    define("host", "mysql-server");
-    define("db_user", "pwt5ca_todo");
-    define("db_password", "23nBNY5FfxKx8QYKiAxV");
-    define("db_name", "pwt5ca_todo");
+  define("host", "mysql-server");
+  define("db_user", "pwt5ca_todo");
+  define("db_password", "23nBNY5FfxKx8QYKiAxV");
+  define("db_name", "pwt5ca_todo");
 
-    define("COOKIE_DOMAIN", "");
-    define("COOKIE_PATH", "/");
-    define("COOKIE_LIFE", 60*60*24);
+  // define("COOKIE_DOMAIN", "");
+  // define("COOKIE_PATH", "/");
+  // define("COOKIE_LIFE", 60 * 60 * 24);
+  // define("COOKIE_SECURE", false);
 } else {
-    define("host", "mysql-server");
-    define("db_user", "pwt5ca_todo");
-    define("db_password", "23nBNY5FfxKx8QYKiAxV");
-    define("db_name", "pwt5ca_todo");
+  define("host", "localhost");
+  define("db_user", "pwt5ca_todo");
+  define("db_password", "23nBNY5FfxKx8QYKiAxV");
+  define("db_name", "pwt5ca_todo");
 
-    define("COOKIE_DOMAIN", "");
-    define("COOKIE_PATH", "/");
-    define("COOKIE_LIFE", 60*60*24);
+  // define("COOKIE_DOMAIN", "patrickwthomas.net");
+  // define("COOKIE_PATH", "");
+  // define("COOKIE_LIFE", 60 * 60 * 24);
+  // define("COOKIE_SECURE", true);
 }
 
 const session_id_length = 32;

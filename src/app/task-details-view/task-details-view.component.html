@@ -1,17 +1,28 @@
 <div class="container box">
-  <div *ngIf="task_index==-1; else detailsElse">
+  <div *ngIf="task_index == -1; else detailsElse">
     <p class="has-text-grey">
       No task selected.
     </p>
   </div>
   <ng-template #detailsElse>
-    <form [formGroup]="detailsForm" (ngSubmit)="saveDetails()">
+    <form
+      [formGroup]="detailsForm"
+      (ngSubmit)="saveDetails(detailsForm.value)"
+      id="detailsForm"
+    >
       <div class="field">
         <label class="label">Name</label>
         <div class="field">
           <p class="control is-expanded">
-            <input class="input" type="text" placeholder="Name" spellcheck="true" maxlength=255
-              autocapitalize="sentences" formControlName="name">
+            <input
+              class="input"
+              type="text"
+              placeholder="Name"
+              spellcheck="true"
+              maxlength="255"
+              autocapitalize="sentences"
+              formControlName="name"
+            />
           </p>
         </div>
       </div>
@@ -19,8 +30,13 @@
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          <textarea class="textarea" placeholder="Task description." spellcheck="true" autocapitalize="sentences"
-            formControlName="description"></textarea>
+          <textarea
+            class="textarea"
+            placeholder="Task description."
+            spellcheck="true"
+            autocapitalize="sentences"
+            formControlName="description"
+          ></textarea>
         </div>
       </div>
 
@@ -41,10 +57,10 @@
         <label class="label">Date due</label>
         <div class="field is-grouped">
           <div class="control is-expanded">
-            <input class="input" type="date" formControlName="date_due_date">
+            <input class="input" type="date" formControlName="date_due_date" />
           </div>
           <div class="control is-expanded">
-            <input class="input" type="time" formControlName="date_due_time">
+            <input class="input" type="time" formControlName="date_due_time" />
           </div>
         </div>
       </div>
@@ -53,20 +69,35 @@
         <label class="label">Date created</label>
         <div class="field is-grouped">
           <div class="control is-expanded">
-            <input class="input" type="date" formControlName="date_created_date">
+            <input
+              class="input"
+              type="date"
+              formControlName="date_created_date"
+            />
           </div>
           <div class="control is-expanded">
-            <input class="input" type="time" formControlName="date_created_time">
+            <input
+              class="input"
+              type="time"
+              formControlName="date_created_time"
+            />
           </div>
         </div>
       </div>
 
       <div class="field">
-        <nav class="level" style="width:100%">
+        <nav class="level" style="width: 100%;">
           <div class="level-left">
             <div class="level-item">
-              <button class="button is-small" type="submit"
-                [ngClass]="{'is-primary': detailsForm.value.name, 'is-danger': !detailsForm.value.name}">
+              <button
+                class="button is-small"
+                type="submit"
+                form="detailsForm"
+                [ngClass]="{
+                  'is-primary': detailsForm.value.name,
+                  'is-danger': !detailsForm.value.name
+                }"
+              >
                 Save changes
               </button>
             </div>
@@ -74,23 +105,13 @@
           <div class="level-right">
             <div class="level-item">
               <a class="button is-danger is-small" (click)="deleteActiveTask()">
+                <i class="fa fa-times mr-1" aria-hidden="true"></i>
                 Delete task
               </a>
             </div>
           </div>
         </nav>
       </div>
-
-      <!-- <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"></label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-          </div>
-        </div>
-      </div> -->
-
     </form>
   </ng-template>
 </div>
